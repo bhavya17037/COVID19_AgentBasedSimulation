@@ -5,6 +5,7 @@ Main code for Agent Based Simulation
 from covid_abs.agents import Status, InfectionSeverity, Agent
 from covid_abs.common import *
 import numpy as np
+import random
 
 def distance(a, b):
     return np.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2)
@@ -47,6 +48,8 @@ class Simulation(object):
         "A dictionary with conditional changes in the Agent attributes"
 
         self.total_wealth = kwargs.get("total_wealth", 10 ** 4)
+
+        self.daily_available_doses = kwargs.get("daily_available_doses", 10) 
 
     def _xclip(self, x):
         return np.clip(int(x), 0, self.length)
@@ -235,7 +238,26 @@ class Simulation(object):
         in the population and updating the statistics
         """
         mov_triggers = [k for k in self.triggers_population if k['attribute'] == 'move']
-        other_triggers = [k for k in self.triggers_population if k['attribute'] != 'move']
+        other_triggers = [k for k in self.triggers_population if (k['attribute'] != 'move' and k['attribute'] != 'vaccinate')]
+        vaccination_triggers = [k for k in self.triggers_population if k['attribute'] == 'vaccinate']
+
+        non_immune = []
+
+        for agent in self.population:
+            if agent.status == Status.Susceptible:
+                non_immune.append(agent)
+
+        random.shuffle(non_immune)
+
+        vaccinations_available = self.daily_available_doses
+        for agent in non_immune:
+            if vaccinations_available > 0:
+                for trigger in vaccination_triggers:
+                    if trigger['condition'](agent):
+                        agent.status = Status.Recovered_Immune
+                        vaccinations_available -= 1
+
+
 
         for agent in self.population:
             self.move(agent, triggers=mov_triggers)
