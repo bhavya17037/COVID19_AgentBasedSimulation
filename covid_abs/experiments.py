@@ -32,7 +32,7 @@ def plot_batch_results(df, health_metrics=('Susceptible', 'Infected', 'Hospitali
     :param df: Pandas DataFrame returned by batch_experiment method
     """
 
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=[20, 5])
+    fig, ax = plt.subplots(nrows=1, ncols=2, figsize=[20, 5])
 
     ax[0].set_title('Average Contagion Evolution')
     ax[0].set_xlabel("Nº of Days")
@@ -46,22 +46,22 @@ def plot_batch_results(df, health_metrics=('Susceptible', 'Infected', 'Hospitali
     handles, labels = ax[0].get_legend_handles_labels()
     lgd = ax[0].legend(handles, labels, loc='top right')
 
-    mmax = 0.0
-    mmin = np.inf
-    smax = 0
-    smin = np.inf
+    # mmax = 0.0
+    # mmin = np.inf
+    # smax = 0
+    # smin = np.inf
 
-    for col in ecom_metrics:
-        val = df[(df["Metric"] == col)]['Avg'].values
-        tmp = int(np.max(val))
-        mmax = np.max([mmax, tmp])
-        tmp = np.min(val)
-        mmin = np.min([mmin, tmp])
-        val = df[(df["Metric"] == col)]['Std'].values
-        tmp = np.max(val)
-        smax = np.max([smax, tmp])
-        tmp = np.min(val)
-        smin = np.min([smin, tmp])
+    # for col in ecom_metrics:
+    #     val = df[(df["Metric"] == col)]['Avg'].values
+    #     tmp = int(np.max(val))
+    #     mmax = np.max([mmax, tmp])
+    #     tmp = np.min(val)
+    #     mmin = np.min([mmin, tmp])
+    #     val = df[(df["Metric"] == col)]['Std'].values
+    #     tmp = np.max(val)
+    #     smax = np.max([smax, tmp])
+    #     tmp = np.min(val)
+    #     smin = np.min([smin, tmp])
 
     # ax[1].set_title('Average Economical Impact')
     # ax[1].set_xlabel("Nº of Days")
