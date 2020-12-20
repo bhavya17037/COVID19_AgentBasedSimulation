@@ -50,6 +50,7 @@ class Simulation(object):
         self.total_wealth = kwargs.get("total_wealth", 10 ** 4)
 
         self.daily_available_doses = kwargs.get("daily_available_doses", 10) 
+        self.strategy = kwargs.get("strategy", "null")
 
     def _xclip(self, x):
         return np.clip(int(x), 0, self.length)
@@ -232,22 +233,15 @@ class Simulation(object):
 
         agent.wealth -= self.minimum_expense * basic_income[agent.social_stratum]
 
-    def execute(self):
-        """
-        Execute a complete iteration cycle of the Simulation, executing all actions for each agent
-        in the population and updating the statistics
-        """
-        mov_triggers = [k for k in self.triggers_population if k['attribute'] == 'move']
-        other_triggers = [k for k in self.triggers_population if (k['attribute'] != 'move' and k['attribute'] != 'vaccinate')]
-        vaccination_triggers = [k for k in self.triggers_population if k['attribute'] == 'vaccinate']
 
+    def age_strategy(self, vaccination_triggers):
         non_immune = []
 
         for agent in self.population:
             if agent.status == Status.Susceptible:
                 non_immune.append(agent)
 
-        random.shuffle(non_immune)
+        non_immune.sort(key=lambda x: x.age, reverse=True)
 
         vaccinations_available = self.daily_available_doses
         for agent in non_immune:
@@ -257,6 +251,21 @@ class Simulation(object):
                         agent.status = Status.Recovered_Immune
                         vaccinations_available -= 1
 
+
+    def execute(self):
+        """
+        Execute a complete iteration cycle of the Simulation, executing all actions for each agent
+        in the population and updating the statistics
+        """
+
+        strategies = ['move', 'reverse_age_vaccinate']
+
+        mov_triggers = [k for k in self.triggers_population if k['attribute'] == 'move']
+        other_triggers = [k for k in self.triggers_population if (k['attribute'] not in strategies)]
+        reverse_age_vaccination_triggers = [k for k in self.triggers_population if k['attribute'] == 'reverse_age_vaccinate']
+
+        if self.strategy == "reverse_age_vaccinate":
+            age_strategy(reverse_age_vaccination_triggers)
 
 
         for agent in self.population:
