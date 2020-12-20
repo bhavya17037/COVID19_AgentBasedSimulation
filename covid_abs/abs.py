@@ -282,7 +282,6 @@ class Simulation(object):
             self.age_strategy(reverse_age_vaccination_triggers)
         elif self.strategy == "random_vaccination":
             self.random_vaccination()
-        else
 
         for agent in self.population:
             self.move(agent, triggers=mov_triggers)
