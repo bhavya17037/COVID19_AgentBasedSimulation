@@ -130,14 +130,14 @@ def update(sim, scat, linhas1, linhas2, statistics):
     for col in linhas1.keys():
         linhas1[col].set_data(df1.index.values, df1[col].values)
 
-    for col in linhas2.keys():
-        linhas2[col].set_data(df2.index.values, df2[col].values)
+    # for col in linhas2.keys():
+    #     linhas2[col].set_data(df2.index.values, df2[col].values)
 
     ret = [scat]
     for l in linhas1.values():
         ret.append(l)
-    for l in linhas2.values():
-        ret.append(l)
+    # for l in linhas2.values():
+    #     ret.append(l)
 
     return tuple(ret)
 
@@ -153,7 +153,7 @@ def execute_simulation(sim, **kwargs):
     """
     statistics = {'info': [], 'ecom': []}
 
-    fig, ax = plt.subplots(nrows=1, ncols=3, figsize=[20, 5])
+    fig, ax = plt.subplots(nrows=1, ncols=2, figsize=[20, 5])
     # plt.close()
 
     frames = kwargs.get('iterations', 100)
@@ -191,17 +191,17 @@ def execute_simulation(sim, **kwargs):
 
     linhas2 = {}
 
-    ax[2].set_title('Economical Impact')
-    ax[2].set_xlim((0, frames))
+    # ax[2].set_title('Economical Impact')
+    # ax[2].set_xlim((0, frames))
 
-    for col in df2.columns.values:
-        linhas2[col], = ax[2].plot(df2.index.values, df2[col].values, c=color3(col), label=legend_ecom[col])
+    # for col in df2.columns.values:
+    #     linhas2[col], = ax[2].plot(df2.index.values, df2[col].values, c=color3(col), label=legend_ecom[col])
 
-    ax[2].set_xlabel("Nº of Days")
-    ax[2].set_ylabel("Wealth")
+    # ax[2].set_xlabel("Nº of Days")
+    # ax[2].set_ylabel("Wealth")
 
-    handles, labels = ax[2].get_legend_handles_labels()
-    lgd = ax[2].legend(handles, labels, loc='top right') #2, bbox_to_anchor=(1, 1))
+    # handles, labels = ax[2].get_legend_handles_labels()
+    # lgd = ax[2].legend(handles, labels, loc='top right') #2, bbox_to_anchor=(1, 1))
 
     animate = lambda i: update(sim, scat, linhas1, linhas2, statistics)
 
