@@ -234,7 +234,7 @@ class Simulation(object):
         agent.wealth -= self.minimum_expense * basic_income[agent.social_stratum]
 
 
-    def random_vaccination(self, vaccination_triggers):
+    def random_vaccination(self):
         non_immune = []
 
         for agent in self.population:
@@ -244,8 +244,7 @@ class Simulation(object):
         random.shuffle(non_immune)
 
         for agent in non_immune[:self.daily_available_doses]:
-            for trigger in vaccination_triggers:
-                agent.status = Status.Recovered_Immune
+            agent.status = Status.Recovered_Immune
 
 
 
@@ -281,6 +280,8 @@ class Simulation(object):
 
         if self.strategy == "reverse_age_vaccinate":
             self.age_strategy(reverse_age_vaccination_triggers)
+        elif self.strategy == "random_vaccination":
+            self.random_vaccination()
 
 
         for agent in self.population:
