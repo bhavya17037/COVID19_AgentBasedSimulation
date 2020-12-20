@@ -272,7 +272,7 @@ class Simulation(object):
         in the population and updating the statistics
         """
 
-        strategies = ['move', 'reverse_age_vaccinate']
+        strategies = ['move', 'reverse_age_vaccinate', 'random_vaccination']
 
         mov_triggers = [k for k in self.triggers_population if k['attribute'] == 'move']
         other_triggers = [k for k in self.triggers_population if (k['attribute'] not in strategies)]
@@ -282,7 +282,7 @@ class Simulation(object):
             self.age_strategy(reverse_age_vaccination_triggers)
         elif self.strategy == "random_vaccination":
             self.random_vaccination()
-
+        else
 
         for agent in self.population:
             self.move(agent, triggers=mov_triggers)
