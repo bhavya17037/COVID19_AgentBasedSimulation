@@ -32,7 +32,7 @@ def plot_batch_results(df, health_metrics=('Susceptible', 'Infected', 'Hospitali
     :param df: Pandas DataFrame returned by batch_experiment method
     """
 
-    fig, ax = plt.subplots(nrows=1, ncols=2, figsize=[20, 5])
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=[20, 5])
 
     ax[0].set_title('Average Contagion Evolution')
     ax[0].set_xlabel("Nº of Days")
@@ -63,21 +63,21 @@ def plot_batch_results(df, health_metrics=('Susceptible', 'Infected', 'Hospitali
         tmp = np.min(val)
         smin = np.min([smin, tmp])
 
-    ax[1].set_title('Average Economical Impact')
-    ax[1].set_xlabel("Nº of Days")
-    ax[1].set_ylabel("Wealth")
+    # ax[1].set_title('Average Economical Impact')
+    # ax[1].set_xlabel("Nº of Days")
+    # ax[1].set_ylabel("Wealth")
 
-    for col in ecom_metrics:
-        means = df[(df["Metric"] == col)]['Avg'].values
-        n_mean = np.interp(means, (mmin, mmax), (0, 1))
-        std = df[(df["Metric"] == col)]['Std'].values
-        n_std = np.interp(std, (smin, smax), (0, 1))
-        ax[1].plot(n_mean, label=legend_ecom[col])
-        # std = np.log10(df[(df["Metric"] == col)]['Std'].values)
-        # plot_mean_std(ax[1], n_mean, n_std, color=color3(col))
+    # for col in ecom_metrics:
+    #     means = df[(df["Metric"] == col)]['Avg'].values
+    #     n_mean = np.interp(means, (mmin, mmax), (0, 1))
+    #     std = df[(df["Metric"] == col)]['Std'].values
+    #     n_std = np.interp(std, (smin, smax), (0, 1))
+    #     ax[1].plot(n_mean, label=legend_ecom[col])
+    #     # std = np.log10(df[(df["Metric"] == col)]['Std'].values)
+    #     # plot_mean_std(ax[1], n_mean, n_std, color=color3(col))
 
-    handles, labels = ax[1].get_legend_handles_labels()
-    lgd = ax[1].legend(handles, labels, loc='top left')
+    # handles, labels = ax[1].get_legend_handles_labels()
+    # lgd = ax[1].legend(handles, labels, loc='top left')
 
 
 def plot_graph_batch_results(df, **kwargs):
